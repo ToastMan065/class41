@@ -1,8 +1,10 @@
+//creating the class
 class Game {
   constructor(){
 
   }
 
+  //getting the current gamestate from the firebase database
   getState(){
     var gameStateRef  = database.ref('gameState');
     gameStateRef.on("value",function(data){
@@ -11,12 +13,14 @@ class Game {
 
   }
 
+  //updating the game state with the firebase database
   update(state){
     database.ref('/').update({
       gameState: state
     });
   }
 
+  //instructions on what to do in gamestate 0
   async start(){
     if(gameState === 0){
       player = new Player();
@@ -29,6 +33,7 @@ class Game {
       form.display();
     }
 
+    //loading the images and sprite cordnates... and arrays at line 45
     car1 = createSprite(100,200);
     car1.addImage("car1",car1_img);
     car2 = createSprite(300,200);
@@ -40,11 +45,15 @@ class Game {
     cars = [car1, car2, car3, car4];
   }
 
+  //getting he whole encholata working
   play(){
     form.hide();
     
+    //getting firebase data
     Player.getPlayerInfo();
+    player.getCarsAtEnd();
     
+    //what to do when game is offline
     if(allPlayers !== undefined){
       background(rgb(198,135,103));
       image(track, 0,-displayHeight*4,displayWidth, displayHeight*5);
@@ -70,7 +79,7 @@ class Game {
         cars[index-1].y = y;
        // console.log(index, player.index)
 
-       
+       //coloring the Wip blocks and moving the cam
         if (index === player.index){
           stroke(10);
           fill("red");
@@ -86,19 +95,25 @@ class Game {
 
     }
 
+    //making the car go up
     if(keyIsDown(UP_ARROW) && player.index !== null){
       player.distance +=10
       player.update();
     }
 
+    //updating the rank
     if(player.distance > 3860){
+      player.rank +=1;
       gameState = 2;
+      Player.updateCarsAtEnd(player.rank);
     }
    
     drawSprites();
   }
 
+  //what happens when you win
   end(){
     console.log("Game Ended");
+    console.log(player.rank);
   }
 }

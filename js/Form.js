@@ -1,5 +1,7 @@
+//creating the class
 class Form {
 
+  //creating the input boxes buttons and all the interactable stuff
   constructor() {
     this.input = createInput("Name");
     this.button = createButton('Play');
@@ -7,6 +9,8 @@ class Form {
     this.title = createElement('h2');
     this.reset = createButton('Reset');
   }
+
+  //Hiding the buttons
   hide(){
     this.greeting.hide();
     this.button.hide();
@@ -14,6 +18,7 @@ class Form {
     this.title.hide();
   }
 
+  //displaying everything on the game screen
   display(){
     this.title.html("Car Racing Game");
     this.title.position(displayWidth/2 - 50, 0);
